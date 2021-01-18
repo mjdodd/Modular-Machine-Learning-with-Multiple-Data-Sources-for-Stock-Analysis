@@ -1,0 +1,124 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{tabularx} % extra features for tabular environment
+\usepackage{amsmath}  % improve math presentation
+\usepackage{graphicx} % takes care of graphic including machinery
+\usepackage[margin=1in,letterpaper]{geometry} % decreases margins
+\usepackage{cite} % takes care of citations
+\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\hypersetup{
+	colorlinks=true,       % false: boxed links; true: colored links
+	linkcolor=blue,        % color of internal links
+	citecolor=blue,        % color of links to bibliography
+	filecolor=magenta,     % color of file links
+	urlcolor=blue         
+}
+\usepackage{blindtext}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, text width = 5cm, draw=black, fill=lightgray]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+
+\title{Modular Machine Learning with Multiple Data Sources for Stock Analysis}
+\author{M. Dodd}
+\date{July 2020}
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+    This concept is to create an open-source and modular platform to provide machine learning models and the associated infrastructure to ingest data from a wide-range of financial and media sources, and output analytical no 8 predictions from the model. The architecture of the platform would be conducive to easily adding new data sources, analysis models, and output activities.
+\end{abstract}
+
+\section{Introduction}
+
+Stock market analysis is one of the most saturated fields when it comes to applications of statistical sciences. Machine learning, neural networks, artificial intelligence, etc. are widely implemented by financial intuitions with vast R\&D departments full of data scientists and billion dollar budgets. There is also a fairly active open-source community
+\footnote{\href{https://github.com/firmai/financial-machine-learning}{Open-source financial machine learning projects}}
+developing tools for financial analysis. The goal of this project is to develop a framework that utilizes existing open-source tools as well as new ones, to provide a platform for easily experimenting with new data sources to combine as inputs for a machine-learning model. The model should contain high levels of abstraction, such that the statistical engine of the model is easily adapted to continuously evolving inputs.
+
+The outputs of the model should be unambiguous predictions that may be broadly interpreted as a positive or negative outlook on a financial position. The predictions may be simple classifications, such as positive/negative change in value over a given time period, or regressions of optimal holding period. It would be straightforward to trigger automatic trade operations once a level of confidence in a certain configuration is established. The ultimate goal of the framework is to streamline the path to data-driven analytical trading within the constraints of an individual person's time and financial resources. 
+
+The framework may be developed as three seperate modules (and a fourth module to provide interfaces and presentation). I've assigned weird names to each module that are intended to be unique and identifiable in natural language and code.
+
+\newpage
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[node distance = 2cm]
+\node (mod1)[process]{
+    Hunt
+    \begin{itemize}
+        \item Service APIs (Stock twits, Robintweets, Storywrangler, etc.)
+        \item Scrapers
+        \item Develop a system for classifying features (inputs of Churn)
+        \item Engineer features from new data sources. Experiment with compound features from multiple data sets.
+    \end{itemize}
+    };
+\node (mod2)[process, right of =mod1,xshift=4cm]{
+    Churn
+    \begin{itemize}
+        \item Normalize inputs to make Churn source-agnostic (it can mix and adapt on the fly)
+        \item Maintain model training with only very recent data; requires breadth of data sources.
+        \item Make available multiple configurations depending on the class and abundance of features.
+        \item Potentially introduce other constraints like available capital or short time periods.
+    \end{itemize}};
+\node (mod3)[process, right of = mod2,xshift=4cm]{
+    Whip
+    \begin{itemize}
+        \item Visualize Outputs of Churn
+        \item Execute trade activities
+        \item Evaluate accuracy of model (unique combinations of inputs and Churn parameters)
+    \end{itemize}};
+\node(mod4)[process, below of = mod2,yshift=-6cm]{
+    JR
+    \begin{itemize}
+        \item "Glue", scheduling
+        \item UI and platform-ports here or in Whip
+    \end{itemize}}
+\draw[arrow] (mod1) -- (mod2)
+\draw[arrow] (mod2) -- (mod3)
+\end{tikzpicture}
+\caption{Module Overview}
+\label{fig:my_label}
+\end{figure}
+
+\section{Modules}
+\subsection{Hunt}
+This module is predicted to be the most 'human-labor' intensive early on. It will require some direct efforts any time there is a new source of data that needs to be fed into the model. This process may be streamlined through repetition and proper feature engineering. To make the outputs of this module as homogeneous as possible, we should classify features of each data set in a consistent way. For a straight-forward example, consider the basic market data about a stock. We will identify the important features, and then we might categorize them or assign descriptor tags. The legitimacy of these example descriptions is limited by the author's ignorance. We will use three descriptors for the example: value, volatility, and risk. Each feature may be considered a major or minor influence for each descriptor; it is desirable to keep this range simple. The ultimate goal of the descriptor model is to instruct the Churn module on how to handle the feature. 
+
+Another function of the Hunt module would be to engineer compound features. This function belongs in the Hunt module rather than Churn, since Hunt contains most of the user-inputs and Churn should only receive inputs from Hunt under normal use circumstances. Consider a compound feature of 
+
+\begin{figure}
+    \begin{center}
+    {\large \bf Position:} TSLA
+        \begin{itemize}
+            \item {\large \bf Current Price:} 372.72
+                \begin{itemize}
+                    \item \colorbox{green}{Major Value Indicator}
+                    \item \colorbox{yellow}{Minor Volatility Indicator}
+                \end{itemize}
+            \item {\large \bf P/E Ratio:} 958.99
+                \begin{itemize}
+                    \item \colorbox{yellow}{Minor Value Indicator}
+                    \item \colorbox{yellow}{Minor Volatility Indicator}
+                    \item \colorbox{yellow}{Minor Risk Indicator}
+                \end{itemize}
+            \item {\large \bf 52wk Range:} 43.67 - 2318.49
+                \begin{itemize}
+                    \item \colorbox{green}{Major volatility indicator}
+                    \item \colorbox{yellow}{Minor value indicator}
+                \end{itemize}
+        \end{itemize}
+    \caption{A mock description set for the basic market data of Tesla stock.}
+    \label{fig:my_label}
+    \end{center}
+\end{figure}
+
+\subsection{Churn}
+
+\subsection{Whip}
+
+\section{Development Plan}
+
+\end{document}
